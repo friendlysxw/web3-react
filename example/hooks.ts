@@ -19,8 +19,10 @@ export function useEagerConnect() {
       }
     })
   }, []) // intentionally only running on mount (make sure it's only mounted once :))
+  //只在mount上运行(确保只挂载一次:))
 
   // if the connection worked, wait until we get confirmation of that to flip the flag
+  //如果连接正常，等待确认后再翻转标志
   useEffect(() => {
     if (!tried && active) {
       setTried(true)

@@ -2,7 +2,7 @@ import React from 'react'
 import { Web3ReactProvider, useWeb3React, UnsupportedChainIdError } from '@web3-react/core'
 import {
   NoEthereumProviderError,
-  UserRejectedRequestError as UserRejectedRequestErrorInjected
+  UserRejectedRequestError as UserRejectedRequestErrorInjected,
 } from '@web3-react/injected-connector'
 import { UserRejectedRequestError as UserRejectedRequestErrorWalletConnect } from '@web3-react/walletconnect-connector'
 import { UserRejectedRequestError as UserRejectedRequestErrorFrame } from '@web3-react/frame-connector'
@@ -23,7 +23,7 @@ import {
   fortmatic,
   magic,
   portis,
-  torus
+  torus,
 } from '../connectors'
 import { Spinner } from '../components/Spinner'
 
@@ -40,7 +40,7 @@ enum ConnectorNames {
   Fortmatic = 'Fortmatic',
   Magic = 'Magic',
   Portis = 'Portis',
-  Torus = 'Torus'
+  Torus = 'Torus',
 }
 
 const connectorsByName: { [connectorName in ConnectorNames]: any } = {
@@ -56,7 +56,7 @@ const connectorsByName: { [connectorName in ConnectorNames]: any } = {
   [ConnectorNames.Fortmatic]: fortmatic,
   [ConnectorNames.Magic]: magic,
   [ConnectorNames.Portis]: portis,
-  [ConnectorNames.Torus]: torus
+  [ConnectorNames.Torus]: torus,
 }
 
 function getErrorMessage(error: Error) {
@@ -82,7 +82,7 @@ function getLibrary(provider: any): Web3Provider {
   return library
 }
 
-export default function() {
+export default function () {
   return (
     <Web3ReactProvider getLibrary={getLibrary}>
       <App />
@@ -221,7 +221,7 @@ function Header() {
           gridTemplateColumns: '1fr min-content 1fr',
           maxWidth: '20rem',
           lineHeight: '2rem',
-          margin: 'auto'
+          margin: 'auto',
         }}
       >
         <ChainId />
@@ -238,6 +238,7 @@ function App() {
   const { connector, library, chainId, account, activate, deactivate, active, error } = context
 
   // handle logic to recognize the connector currently being activated
+  // 处理逻辑以识别当前被激活的连接器
   const [activatingConnector, setActivatingConnector] = React.useState<any>()
   React.useEffect(() => {
     if (activatingConnector && activatingConnector === connector) {
@@ -246,9 +247,12 @@ function App() {
   }, [activatingConnector, connector])
 
   // handle logic to eagerly connect to the injected ethereum provider, if it exists and has granted access already
+  // 如果注入的以太坊提供者存在并且已经授予访问权限，则处理逻辑来急切地连接到它
   const triedEager = useEagerConnect()
 
   // handle logic to connect in reaction to certain events on the injected ethereum provider, if it exists
+  // 如果被注入的以太坊提供者存在特定事件，则处理连接的逻辑
+  // 没有激活也没有授权，或者正在激活（总之，没有完成激活）
   useInactiveListener(!triedEager || !!activatingConnector)
 
   return (
@@ -261,10 +265,10 @@ function App() {
           gridGap: '1rem',
           gridTemplateColumns: '1fr 1fr',
           maxWidth: '20rem',
-          margin: 'auto'
+          margin: 'auto',
         }}
       >
-        {Object.keys(connectorsByName).map(name => {
+        {Object.keys(connectorsByName).map((name) => {
           const currentConnector = connectorsByName[name]
           const activating = currentConnector === activatingConnector
           const connected = currentConnector === connector
@@ -277,7 +281,7 @@ function App() {
                 borderRadius: '1rem',
                 borderColor: activating ? 'orange' : connected ? 'green' : 'unset',
                 cursor: disabled ? 'unset' : 'pointer',
-                position: 'relative'
+                position: 'relative',
               }}
               disabled={disabled}
               key={name}
@@ -299,7 +303,7 @@ function App() {
                   display: 'flex',
                   alignItems: 'center',
                   color: 'black',
-                  margin: '0 0 0 1rem'
+                  margin: '0 0 0 1rem',
                 }}
               >
                 {activating && <Spinner color={'black'} style={{ height: '25%', marginLeft: '-1rem' }} />}
@@ -322,7 +326,7 @@ function App() {
               marginTop: '2rem',
               borderRadius: '1rem',
               borderColor: 'red',
-              cursor: 'pointer'
+              cursor: 'pointer',
             }}
             onClick={() => {
               deactivate()
@@ -343,7 +347,7 @@ function App() {
           gridGap: '1rem',
           gridTemplateColumns: 'fit-content',
           maxWidth: '20rem',
-          margin: 'auto'
+          margin: 'auto',
         }}
       >
         {!!(library && account) && (
@@ -351,7 +355,7 @@ function App() {
             style={{
               height: '3rem',
               borderRadius: '1rem',
-              cursor: 'pointer'
+              cursor: 'pointer',
             }}
             onClick={() => {
               library
@@ -373,7 +377,7 @@ function App() {
             style={{
               height: '3rem',
               borderRadius: '1rem',
-              cursor: 'pointer'
+              cursor: 'pointer',
             }}
             onClick={() => {
               ;(connector as any).changeChainId(chainId === 1 ? 4 : 1)
@@ -387,7 +391,7 @@ function App() {
             style={{
               height: '3rem',
               borderRadius: '1rem',
-              cursor: 'pointer'
+              cursor: 'pointer',
             }}
             onClick={() => {
               ;(connector as any).close()
@@ -401,7 +405,7 @@ function App() {
             style={{
               height: '3rem',
               borderRadius: '1rem',
-              cursor: 'pointer'
+              cursor: 'pointer',
             }}
             onClick={() => {
               ;(connector as any).close()
@@ -415,7 +419,7 @@ function App() {
             style={{
               height: '3rem',
               borderRadius: '1rem',
-              cursor: 'pointer'
+              cursor: 'pointer',
             }}
             onClick={() => {
               ;(connector as any).close()
@@ -429,7 +433,7 @@ function App() {
             style={{
               height: '3rem',
               borderRadius: '1rem',
-              cursor: 'pointer'
+              cursor: 'pointer',
             }}
             onClick={() => {
               ;(connector as any).close()
@@ -445,7 +449,7 @@ function App() {
                 style={{
                   height: '3rem',
                   borderRadius: '1rem',
-                  cursor: 'pointer'
+                  cursor: 'pointer',
                 }}
                 onClick={() => {
                   ;(connector as any).changeNetwork(chainId === 1 ? 100 : 1)
@@ -458,7 +462,7 @@ function App() {
               style={{
                 height: '3rem',
                 borderRadius: '1rem',
-                cursor: 'pointer'
+                cursor: 'pointer',
               }}
               onClick={() => {
                 ;(connector as any).close()
@@ -473,7 +477,7 @@ function App() {
             style={{
               height: '3rem',
               borderRadius: '1rem',
-              cursor: 'pointer'
+              cursor: 'pointer',
             }}
             onClick={() => {
               ;(connector as any).close()
