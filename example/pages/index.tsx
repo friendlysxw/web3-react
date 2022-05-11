@@ -10,6 +10,7 @@ import { Web3Provider } from '@ethersproject/providers'
 import { formatEther } from '@ethersproject/units'
 
 import { useEagerConnect, useInactiveListener } from '../hooks'
+// 所有的连接器实例对象，可能是浏览器扩展注入的以太坊提供者，钱包APP实例等
 import {
   injected,
   network,
@@ -27,6 +28,7 @@ import {
 } from '../connectors'
 import { Spinner } from '../components/Spinner'
 
+// 为连接器实例对象分配名称
 enum ConnectorNames {
   Injected = 'Injected',
   Network = 'Network',
@@ -43,6 +45,7 @@ enum ConnectorNames {
   Torus = 'Torus',
 }
 
+// 通过连接器名称，存储连接器实例对象
 const connectorsByName: { [connectorName in ConnectorNames]: any } = {
   [ConnectorNames.Injected]: injected,
   [ConnectorNames.Network]: network,
@@ -91,6 +94,7 @@ export default function () {
 }
 
 function ChainId() {
+  // 当前链的地址
   const { chainId } = useWeb3React()
 
   return (
@@ -103,7 +107,10 @@ function ChainId() {
     </>
   )
 }
-
+/**
+ * 通过web3-react包装的当前以太坊提供者的代理方法库library，和当前链的地址chainId
+ * 通过代理方法库的getBlockNumber方法获取当前链上存在的区块数量
+ */
 function BlockNumber() {
   const { chainId, library } = useWeb3React()
 
